@@ -131,6 +131,92 @@ find_gae_sdk()
 adjust_sys_path()
 from src import app
 
+from flask.ext.script import Manager, Option
+manager = Manager(app, with_default_commands=[])
+
+# ===----------------------------------------------------------------------===
+
+from flask.ext.script import Shell, prompt, prompt_pass
+
+class RemoteShell(Shell):
+    description = (
+            u"Runs a interactive Python shell using Google App Engine's "
+            u"remote_api."
+        )
+
+    HISTORY_PATH = os.path.expanduser('~/.remote_api_shell_history')
+    DEFAULT_PATH = r'/_ah/remote_api'
+
+    def get_options(self, *args, **kwargs):
+        return (
+            Option('-s', '--server',
+                   dest='server',
+                   default=None,
+                   help=u"The hostname your app is deployed on. Defaults to "
+                        u" <app_id>.appspot.com."),
+            Option('-p', '--path',
+                   dest='path',
+                   default=r'/_ah/remote_api',
+                   help=(u"The path on the server to the remote_api handler. "
+                         u"Defaults to %s.") % self.DEFAULT_PATH),
+            Option('--secure',
+                   dest='secure',
+                   default=False,
+                   action='store_true',
+                   help=u"Use HTTPS when communicating with the server."),
+        ) + super(RemoteShell, self).get_options(*args, **kwargs)
+
+    def run(self, server, path, secure, *args, **kwargs):
+        appid = None
+
+        if server is None and appid:
+            server = '%s.appspot.com' % appid
+
+        def _auth_func():
+            return (prompt('Username', default='admin'),
+                    prompt_pass('Password'))
+
+        import atexit
+        try:
+            import readline
+        except ImportError:
+            readline = None
+
+        from google.appengine.ext.remote_api import remote_api_stub
+        from google.appengine.tools import appengine_rpc
+        remote_api_stub.ConfigureRemoteApi(
+            appid, path, _auth_func, servername=server, save_cookies=True,
+            secure=secure, rpc_server_factory=appengine_rpc.HttpRpcServer)
+        remote_api_stub.MaybeInvokeAuthentication()
+
+        os.environ['SERVER_SOFTWARE'] = 'Development (remote_api_shell)/1.0'
+
+        if not appid:
+            appid = os.environ['APPLICATION_ID']
+        sys.ps1 = '%s> ' % appid
+
+        if readline is not None:
+            readline.parse_and_bind('tab: complete')
+            atexit.register(lambda: readline.write_history_file(self.HISTORY_PATH))
+            if os.path.exists(self.HISTORY_PATH):
+                readline.read_history_file(self.HISTORY_PATH)
+
+        if '' not in sys.path:
+            sys.path.insert(0, '')
+
+        return super(RemoteShell, self).run(*args, **kwargs)
+
+BANNER = (
+        u"App Engine remote_api shell\n"
+        u"Python %s"
+    ) % sys.version
+manager.add_command('shell', RemoteShell(banner=BANNER))
+
+# ===----------------------------------------------------------------------===
+
+if __name__ == '__main__':
+    manager.run()
+
 #
 # End of File
 #

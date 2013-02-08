@@ -61,8 +61,8 @@ run: all
 
 .PHONY: shell
 shell: all
-	"${PKG_ROOT}"/bin/python "${SDK_ROOT}"/remote_api_shell.py \
-	    -s localhost:8080 .
+	"${PKG_ROOT}"/bin/python "${ROOT}"/manage.py \
+	    shell -s localhost:8080
 
 .PHONY: mostlyclean
 mostlyclean:
