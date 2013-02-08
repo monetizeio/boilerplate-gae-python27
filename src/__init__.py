@@ -30,25 +30,15 @@
 # USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
 #
 
-import webapp2
+import flask
+app = flask.Flask(__name__.split('.')[0])
 
-class HelloWebapp2(webapp2.RequestHandler):
-    def get(self):
-        self.response.write('Hello, webapp2!')
-
-routes = [
-    (r'/', HelloWebapp2),
-]
-
-config = {}
-
-app = webapp2.WSGIApplication(routes=routes, debug=True, config=config)
-
-def main():
-    app.run()
+@app.route('/')
+def hello_world():
+    return 'Hello, world!'
 
 if __name__ == '__main__':
-    main()
+    app.run()
 
 #
 # End of File
