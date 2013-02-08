@@ -154,6 +154,11 @@ ${PKG_ROOT}/.stamp-h: ${ROOT}/requirements*.pip ${CACHE_ROOT}/virtualenv/virtual
 	        "${PKG_ROOT}"/bin/pip zip --no-pyc "$$package"; \
 	        cp "${PKG_ROOT}"/lib/python2.7/site-packages/"$$package".zip "${ROOT}"/lib/; \
 	    done
+	ls -1 "${PKG_ROOT}"/lib/python2.7/site-packages | \
+	    grep '\.py$$' | \
+	    while read module; do \
+	        cp "${PKG_ROOT}"/lib/python2.7/site-packages/"$$module" "${ROOT}"/lib/; \
+	    done
 	
 	# install development/testing dependencies:
 	for reqfile in "${ROOT}"/requirements-*.pip; do \
