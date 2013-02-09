@@ -30,7 +30,7 @@
 ROOT=$(shell pwd)
 CACHE_ROOT=${ROOT}/.cache
 PKG_ROOT=${ROOT}/.pkg
-PROJECT_NAME=hellogae
+PROJECT_NAME=boilerplate-gae-python27
 
 -include Makefile.local
 
