@@ -31,7 +31,6 @@ ROOT=$(shell pwd)
 CACHE_ROOT=${ROOT}/.cache
 PKG_ROOT=${ROOT}/.pkg
 PROJECT_NAME=hellogae
-SDK_ROOT=$(shell dirname $(shell which dev_appserver.py))
 
 -include Makefile.local
 
