@@ -49,7 +49,7 @@ check: all
 .PHONY: run
 run: all
 	mkdir -p "${ROOT}"/db/blobstore
-	"${PKG_ROOT}"/bin/python "${SDK_ROOT}"/dev_appserver.py \
+	dev_appserver.py \
 	    --blobstore_path="${ROOT}"/db/blobstore \
 	    --datastore_path="${ROOT}"/db/datastore \
 	    --history_path="${ROOT}"/db/datastore.history \
