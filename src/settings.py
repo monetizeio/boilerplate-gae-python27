@@ -30,17 +30,20 @@
 # USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
 #
 
-import flask
-app = flask.Flask(__name__.split('.')[0])
-import settings as config
-app.config.from_object(config)
+import os
 
-@app.route('/')
-def hello_world():
-    return 'Hello, world!'
+# Enable debug mode if we are running within dev_appserver.py, as indicated by
+# the environment.
+DEBUG = False
+if 'SERVER_SOFTWARE' in os.environ and os.environ['SERVER_SOFTWARE'].startswith('Dev'):
+    DEBUG = True
 
-if __name__ == '__main__':
-    app.run()
+# Session and CSRF keys for the production site are not kept under version
+# control, but rather slipstreamed into the build by the integration server.
+# For the development server, the secret_keys module is auto-generated with
+# random keys.
+from secret_keys import CSRF_SECRET_KEY, SESSION_KEY
+CSRF_ENABLED = True
 
 #
 # End of File
