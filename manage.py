@@ -139,6 +139,10 @@ if 'SERVER_SOFTWARE' in os.environ and os.environ['SERVER_SOFTWARE'].startswith(
         _debugged_app = DebuggedApplication(app.wsgi_app, evalex=True)
     app.wsgi_app = _debugged_app
 
+from gae_mini_profiler.main import application as gae_mini_profiler
+
+# ===----------------------------------------------------------------------===
+
 from flask.ext.script import Manager, Option
 manager = Manager(app, with_default_commands=False)
 

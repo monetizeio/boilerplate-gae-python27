@@ -30,23 +30,9 @@
 # USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
 #
 
-import flask
-app = flask.Flask(__name__.split('.')[0])
-import settings as config
-app.config.from_object(config)
-
-from gae_mini_profiler import profiler, templatetags
-@app.context_processor
-def inject_profiler():
-    return dict(profiler_includes=templatetags.profiler_includes())
-app.wsgi_app = profiler.ProfilerWSGIMiddleware(app.wsgi_app)
-
-@app.route('/')
-def hello_world():
-    return 'Hello, world!'
-
-if __name__ == '__main__':
-    app.run()
+def gae_mini_profiler_should_profile_production():
+    from google.appengine.api import users
+    return users.is_current_user_admin()
 
 #
 # End of File

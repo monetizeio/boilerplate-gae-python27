@@ -97,7 +97,11 @@ ${CACHE_ROOT}/virtualenv/virtualenv-1.8.4.tar.gz:
 	mkdir -p "${CACHE_ROOT}"/virtualenv
 	sh -c "cd "${CACHE_ROOT}"/virtualenv && curl -O 'http://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.8.4.tar.gz'"
 
-${PKG_ROOT}/.stamp-h: ${ROOT}/requirements*.pip ${CACHE_ROOT}/virtualenv/virtualenv-1.8.4.tar.gz
+${CACHE_ROOT}/gae_mini_profiler/fa20c2e7f14863e2cb6c9a52d8508325bda9c365:
+	mkdir -p "${CACHE_ROOT}"/gae_mini_profiler
+	sh -c "cd "${CACHE_ROOT}"/gae_mini_profiler && curl -O 'https://nodeload.github.com/kamens/gae_mini_profiler/tar.gz/fa20c2e7f14863e2cb6c9a52d8508325bda9c365'"
+
+${PKG_ROOT}/.stamp-h: ${ROOT}/requirements*.pip ${CACHE_ROOT}/virtualenv/virtualenv-1.8.4.tar.gz ${CACHE_ROOT}/gae_mini_profiler/fa20c2e7f14863e2cb6c9a52d8508325bda9c365
 	# Because build and run-time dependencies are not thoroughly tracked,
 	# it is entirely possible that rebuilding the development environment
 	# on top of an existing one could result in a broken build. For the
@@ -166,6 +170,13 @@ ${PKG_ROOT}/.stamp-h: ${ROOT}/requirements*.pip ${CACHE_ROOT}/virtualenv/virtual
 	    while read module; do \
 	        cp "${PKG_ROOT}"/lib/python2.7/site-packages/"$$module" "${ROOT}"/lib/; \
 	    done
+	
+	# GAE-mini-profiler doesn't have a setuptools instlaler, so we package it
+	# by hand:
+	mkdir -p "${ROOT}"/lib/gae_mini_profiler
+	tar --strip-components 1 \
+	    -C "${ROOT}"/lib/gae_mini_profiler --gzip \
+	    -xf "${CACHE_ROOT}"/gae_mini_profiler/fa20c2e7f14863e2cb6c9a52d8508325bda9c365
 	
 	# install development/testing dependencies:
 	for reqfile in "${ROOT}"/requirements-*.pip; do \
