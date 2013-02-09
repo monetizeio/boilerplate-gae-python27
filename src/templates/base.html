@@ -201,9 +201,9 @@
      # for typography, forms, buttons, charts, navigation and other interface
      # components, as well as optional JavaScript extensions. #}
     <link rel="stylesheet" type="text/css" media="all"
-          href="/static/lib/bootstrap/{{ bootstrap_version }}/css/bootstrap.min.css"/>
+          href="/static/lib/bootstrap/{{ bootstrap_version }}/css/bootstrap{% if not config.DEBUG %}.min{% endif %}.css"/>
     <link rel="stylesheet" type="text/css" media="all"
-          href="/static/lib/bootstrap/{{ bootstrap_version }}/css/bootstrap-responsive.min.css"/>
+          href="/static/lib/bootstrap/{{ bootstrap_version }}/css/bootstrap-responsive{% if not config.DEBUG %}.min{% endif %}.css"/>
 
     {# The primary stylesheets for the current theme. #}
     <link rel="stylesheet" type="text/css" media="all"
@@ -215,7 +215,7 @@
      # HTML5 features, and adds classes to the <html> element allowing us to
      # target specific browser functionality in our stylesheets. #}
     <script type="application/javascript"
-            src="/static/lib/modernizr/{{ modernizr_version }}/modernizr.custom.js"></script>
+            src="/static/lib/modernizr/{{ modernizr_version }}/modernizr.custom{% if not config.DEBUG %}.min{% endif %}.js"></script>
 
     {# FIXME: add respond.js #}
 {% endblock javascript_header %}
@@ -267,26 +267,26 @@
     {# jQuery, a multi-purpose JavaScript framework. We grab Google CDN's jQuery,
      # and fall back on our own if Google is not available. #}
     <script type="application/javascript"
-            src="//ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
+            src="//ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery{% if not config.DEBUG %}.min{% endif %}.js"></script>
     <script type="application/javascript">
         window.jQuery || Modernizr.load({
-                load: [ "/static/lib/jquery/{{ jquery_version }}/jquery.min.js" ]
+                load: [ "/static/lib/jquery/{{ jquery_version }}/jquery{% if not config.DEBUG %}.min{% endif %}.js" ]
             });
     </script>
 
     {# jQuery UI, a curated set of user interface interactions, effects,
      # widgets, and themes built on top of the jQuery JavaScript Library. #}
     <script type="application/javascript"
-            src="//ajax.googleapis.com/ajax/libs/jqueryui/{{ jqueryui_version }}/jquery-ui.min.js"></script>
+            src="//ajax.googleapis.com/ajax/libs/jqueryui/{{ jqueryui_version }}/jquery-ui{% if not config.DEBUG %}.min{% endif %}.js"></script>
     <script type="application/javascript">
         window.jQuery.ui || Modernizr.load({
-                load: [ "/static/lib/jquery-ui/{{ jqueryui_version }}/js/jquery-ui.min.js" ]
+                load: [ "/static/lib/jquery-ui/{{ jqueryui_version }}/js/jquery-ui{% if not config.DEBUG %}.min{% endif %}.js" ]
             });
     </script>
 
     <script type="application/javascript">
         Modernizr.load({
-                load: [ "/static/lib/bootstrap/{{ bootstrap_version }}/js/bootstrap.min.js" ]
+                load: [ "/static/lib/bootstrap/{{ bootstrap_version }}/js/bootstrap{% if not config.DEBUG %}.min{% endif %}.js" ]
             });
     </script>
 {% endblock javascript_frameworks %}
