@@ -14,6 +14,20 @@ libraries:
   version: 2.6
 
 handlers:
+- url: /static
+  static_dir: src/static
+- url: /apple-touch-icon(.*)\.png
+  static_files: src/static/images/apple-touch-icon\1.png
+  upload: src/static/images/apple-touch-icon(.*)\.png
+- url: /favicon.ico
+  static_files: src/static/images/favicon.ico
+  upload: src/static/images/favicon.ico
+- url: /crossdomain.xml
+  static_files: src/static/info/crossdomain.xml
+  upload: src/static/info/crossdomain.xml
+- url: /robots.txt
+  static_files: src/static/info/robots.txt
+  upload: src/static/info/robots.txt
 - url: /gae_mini_profiler/static
   static_dir: lib/gae_mini_profiler/static
 - url: /gae_mini_profiler/.*
