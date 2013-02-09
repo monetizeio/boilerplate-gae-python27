@@ -30,11 +30,13 @@
 # USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
 #
 
+from flask import render_template
+
 from . import app
 
 @app.route('/')
-def hello_world():
-    return 'Hello, world!'
+def welcome():
+    return render_template('base.html')
 
 #
 # End of File
