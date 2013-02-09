@@ -30,10 +30,19 @@
 # USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
 #
 
-from .application import app
+from flask import Flask
+app = Flask(__name__.split('.')[0])
 
-if __name__ == '__main__':
-    app.run()
+import settings as config
+app.config.from_object(config)
+
+from gae_mini_profiler import profiler, templatetags
+@app.context_processor
+def inject_profiler():
+    return dict(profiler_includes=templatetags.profiler_includes())
+app.wsgi_app = profiler.ProfilerWSGIMiddleware(app.wsgi_app)
+
+import urls
 
 #
 # End of File
