@@ -131,6 +131,14 @@ find_gae_sdk()
 adjust_sys_path()
 from src import app
 
+_debugged_app = None
+if 'SERVER_SOFTWARE' in os.environ and os.environ['SERVER_SOFTWARE'].startswith('Dev'):
+    global _debugged_app
+    from werkzeug import DebuggedApplication
+    if _debugged_app is None:
+        _debugged_app = DebuggedApplication(app.wsgi_app, evalex=True)
+    app.wsgi_app = _debugged_app
+
 from flask.ext.script import Manager, Option
 manager = Manager(app, with_default_commands=[])
 
