@@ -140,7 +140,7 @@ if 'SERVER_SOFTWARE' in os.environ and os.environ['SERVER_SOFTWARE'].startswith(
     app.wsgi_app = _debugged_app
 
 from flask.ext.script import Manager, Option
-manager = Manager(app, with_default_commands=[])
+manager = Manager(app, with_default_commands=False)
 
 # ===----------------------------------------------------------------------===
 
