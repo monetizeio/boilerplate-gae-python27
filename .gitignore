@@ -7,3 +7,4 @@ lib/
 .coverage
 build/
 db/
+secret_keys\.py

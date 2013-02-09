@@ -36,7 +36,7 @@ SDK_ROOT=$(shell dirname $(shell which dev_appserver.py))
 -include Makefile.local
 
 .PHONY: all
-all: ${PKG_ROOT}/.stamp-h
+all: ${PKG_ROOT}/.stamp-h ${ROOT}/src/secret_keys.py
 
 .PHONY: check
 check: all
@@ -83,6 +83,14 @@ distclean: clean
 maintainer-clean: distclean
 	@echo 'This command is intended for maintainers to use; it'
 	@echo 'deletes files that may need special tools to rebuild.'
+
+# ===----------------------------------------------------------------------===
+
+${ROOT}/src/secret_keys.py:
+	@echo  >"${ROOT}"/src/secret_keys.py '#!/usr/bin/env python'
+	@echo >>"${ROOT}"/src/secret_keys.py '# -*- coding: utf-8 -*-'
+	@echo >>"${ROOT}"/src/secret_keys.py "SESSION_KEY='`LC_CTYPE=C < /dev/urandom tr -dc A-Za-z0-9_ | head -c24`'"
+	@echo >>"${ROOT}"/src/secret_keys.py "CSRF_SECRET_KEY='`LC_CTYPE=C < /dev/urandom tr -dc A-Za-z0-9_ | head -c24`'"
 
 # ===----------------------------------------------------------------------===
 
