@@ -30,8 +30,8 @@
 # USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
 #
 
-import flask
-app = flask.Flask(__name__.split('.')[0])
+from flask import Flask
+app = Flask(__name__.split('.')[0])
 import settings as config
 app.config.from_object(config)
 
